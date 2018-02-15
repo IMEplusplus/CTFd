@@ -31,9 +31,9 @@ def confirm_user(data=None):
             s = TimedSerializer(app.config['SECRET_KEY'])
             email = s.loads(utils.base64decode(data, urldecode=True), max_age=1800)
         except BadTimeSignature:
-            return render_template('confirm.html', errors=['Your confirmation link has expired'])
+            return render_template('confirm.html', errors=['O seu link expirou'])
         except (BadSignature, TypeError, base64.binascii.Error):
-            return render_template('confirm.html', errors=['Your confirmation token is invalid'])
+            return render_template('confirm.html', errors=['O seu token expirou'])
         team = Teams.query.filter_by(email=email).first_or_404()
         team.verified = True
         db.session.commit()
@@ -67,7 +67,7 @@ def confirm_user(data=None):
                     username=team.name.encode('utf-8'),
                     email=team.email.encode('utf-8')
                 ))
-            return render_template('confirm.html', team=team, infos=['Your confirmation email has been resent!'])
+            return render_template('confirm.html', team=team, infos=['Seu email de confimacao for resetado!'])
         elif request.method == "GET":
             # User has been directed to the confirm page
             team = Teams.query.filter_by(id=session['id']).first_or_404()
@@ -88,9 +88,9 @@ def reset_password(data=None):
             s = TimedSerializer(app.config['SECRET_KEY'])
             name = s.loads(utils.base64decode(data, urldecode=True), max_age=1800)
         except BadTimeSignature:
-            return render_template('reset_password.html', errors=['Your link has expired'])
+            return render_template('reset_password.html', errors=['O seu link expirou'])
         except (BadSignature, TypeError, base64.binascii.Error):
-            return render_template('reset_password.html', errors=['Your reset token is invalid'])
+            return render_template('reset_password.html', errors=['O seu token eh invalido'])
 
         if request.method == "GET":
             return render_template('reset_password.html', mode='set')
@@ -154,13 +154,13 @@ def register():
         team_name_email_check = utils.check_email_format(name)
 
         if not valid_email:
-            errors.append("Por favor insira um email válido")
+            errors.append("Por favor insira um email valido")
         if names:
-            errors.append('Este nome de time já existe')
+            errors.append('Este nome de time ja existe')
         if team_name_email_check is True:
-            errors.append('O nome do seu time não pode ser um endereço de email')
+            errors.append('O nome do seu time nao pode ser um endereco de email')
         if emails:
-            errors.append('Esse email já está sendo utilizado')
+            errors.append('Esse email ja esta sendo utilizado')
         if pass_short:
             errors.append('Escolha uma senha maior')
         if pass_long:
@@ -195,7 +195,7 @@ def register():
                     return redirect(url_for('auth.confirm_user'))
                 else:  # Don't care about confirming users
                     if utils.can_send_mail():  # We want to notify the user that they have registered.
-                        utils.sendmail(request.form['email'], "Você foi registrado com sucesso no  {}".format(utils.get_config('ctf_name')))
+                        utils.sendmail(request.form['email'], "Voce foi registrado com sucesso no  {}".format(utils.get_config('ctf_name')))
 
         logger.warn("[{date}] {ip} - {username} registered with {email}".format(
             date=time.strftime("%m/%d/%Y %X"),
@@ -260,7 +260,7 @@ def login():
                 date=time.strftime("%m/%d/%Y %X"),
                 ip=utils.get_ip()
             ))
-            errors.append("Your username or password is incorrect")
+            errors.append("Seu email ou senha estao errados")
             db.session.close()
             return render_template('login.html', errors=errors)
 
@@ -273,4 +273,4 @@ def login():
 def logout():
     if utils.authed():
         session.clear()
-    :return redirect(url_for('views.static_html'))
+    return redirect(url_for('views.static_html'))
