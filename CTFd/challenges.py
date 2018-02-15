@@ -356,7 +356,7 @@ def chal(chalid):
             if max_tries and fails >= max_tries > 0:
                 return jsonify({
                     'status': 0,
-                    'message': "Você tem 0 tentativa restante"
+                    'message': "Vc tem 0 tentativa restante"
                 })
 
             status, message = chal_class.attempt(chal, request)
@@ -385,9 +385,9 @@ def chal(chalid):
         else:
             logger.info("{0} submitted {1} with kpm {2} [ALREADY SOLVED]".format(*data))
             # return '2' # challenge was already solved
-            return jsonify({'status': 2, 'message': 'Você já resolveu essa'})
+            return jsonify({'status': 2, 'message': 'Vc ja resolveu essa'})
     else:
         return jsonify({
             'status': -1,
-            'message': "Você deve estar logado para resolver os desafios"
+            'message': "Vc deve estar logado para resolver os desafios"
         })
