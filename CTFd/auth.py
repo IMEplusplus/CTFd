@@ -154,19 +154,19 @@ def register():
         team_name_email_check = utils.check_email_format(name)
 
         if not valid_email:
-            errors.append("Please enter a valid email address")
+            errors.append("Por favor insira um email válido")
         if names:
-            errors.append('That team name is already taken')
+            errors.append('Este nome de time já existe')
         if team_name_email_check is True:
-            errors.append('Your team name cannot be an email address')
+            errors.append('O nome do seu time não pode ser um endereço de email')
         if emails:
-            errors.append('That email has already been used')
+            errors.append('Esse email já está sendo utilizado')
         if pass_short:
-            errors.append('Pick a longer password')
+            errors.append('Escolha uma senha maior')
         if pass_long:
-            errors.append('Pick a shorter password')
+            errors.append('Escolha uma senha menor')
         if name_len:
-            errors.append('Pick a longer team name')
+            errors.append('Escolha um nome de time maior')
 
         if len(errors) > 0:
             return render_template('register.html', errors=errors, name=request.form['name'], email=request.form['email'], password=request.form['password'])
@@ -195,7 +195,7 @@ def register():
                     return redirect(url_for('auth.confirm_user'))
                 else:  # Don't care about confirming users
                     if utils.can_send_mail():  # We want to notify the user that they have registered.
-                        utils.sendmail(request.form['email'], "You've successfully registered for {}".format(utils.get_config('ctf_name')))
+                        utils.sendmail(request.form['email'], "Você foi registrado com sucesso no  {}".format(utils.get_config('ctf_name')))
 
         logger.warn("[{date}] {ip} - {username} registered with {email}".format(
             date=time.strftime("%m/%d/%Y %X"),
@@ -273,4 +273,4 @@ def login():
 def logout():
     if utils.authed():
         session.clear()
-    return redirect(url_for('views.static_html'))
+    :return redirect(url_for('views.static_html'))
